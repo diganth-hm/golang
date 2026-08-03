@@ -15,6 +15,7 @@ func main(){
 	var high_sal float64 = 0
 	var high_sal_emp string
 	
+	// [...] This is used if  do not know the lenght of the Array
 	employee := [...] Employee{
 		{Name:"Samay" ,Id:322,Salary:57345.646 },
 		{Name:"Karan" ,Id:563,Salary:60246.326 },
