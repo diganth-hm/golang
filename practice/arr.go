@@ -22,6 +22,7 @@ func main(){
 		
 	}
 	fmt.Println("\nThe details of the Employees are")
+	//for _,emp := range employee{} can also be used if no need of "i"
 	for i, emp := range employee{
 		
 		fmt.Println("\nEmployee no:",i+1)
