@@ -4,6 +4,7 @@ import (
 	"io"
 	"net/http"
 	"strings"
+	"net/url"
 )
 
 
@@ -52,8 +53,27 @@ func PerfornmPostJson(){
 	 fmt.Println("The request sent was : \n",string(content))
 }
 
+func PerfromPostFormreq(){
+	fmt.Println("Performing PostForm request on local host")
+	const myurl = "http://localhost:3000/postform"
+
+	data := url.Values{}
+	data.Add("firstname","Diganth")
+	data.Add("lastname","HM")
+	data.Add("Email","lonny23@Ggmail.com")
+
+	response,err := http.PostForm(myurl,data)
+	checkerr(err)
+	defer response.Body.Close()
+	content,err := io.ReadAll(response.Body)
+	checkerr(err)
+	fmt.Println("Status code : ",response.StatusCode)
+	fmt.Println("content in the req is : \n",string(content))
+}
+
 func main(){
 	
 	//PerformGet()
-	PerfornmPostJson()
+	//PerfornmPostJson()
+	PerfromPostFormreq()
 }
