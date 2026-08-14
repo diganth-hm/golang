@@ -14,6 +14,7 @@ func checkerr(err error){
 }
 
 func PerformGet(){
+	fmt.Println("Performing get request on local host")
 	const url="http://localhost:3000/get"
 	response,err := http.Get(url)
 	checkerr(err)
@@ -31,7 +32,28 @@ func PerformGet(){
    fmt.Println("using strings pkg  and builder \n The content is ",responseString.String())
 }
 
+func PerfornmPostJson(){
+	fmt.Println("Performing  Post request on local host")
+	const url="http://localhost:3000/post"
+	//fake json payload
+	requestBody := strings.NewReader(`
+	 {
+		"coursename":"Golang",
+		"price":6744,
+		"hours":45
+    }	
+	 `)
+	 response,err := http.Post(url,"application/json",requestBody)
+	 checkerr(err)
+	 defer response.Body.Close()
+	 fmt.Println("status code : ",response.StatusCode)
+	 content,err := io.ReadAll(response.Body)
+	 checkerr(err)
+	 fmt.Println("The request sent was : \n",string(content))
+}
+
 func main(){
-	fmt.Println("Performing get request on local host")
-	PerformGet()
+	
+	//PerformGet()
+	PerfornmPostJson()
 }
