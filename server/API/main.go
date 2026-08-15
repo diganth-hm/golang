@@ -93,7 +93,7 @@ func update(w http.ResponseWriter,r * http.Request){
     // for loop 
 	for  index,course := range courses{
 		if course.CourseId==params["id"]{
-			courses=append(courses[:index],courses[index+1]...)
+			courses=append(courses[:index],courses[index+1:]...)
 			var course Course
 			_=josn.NewDecoder(r).Decode(&course)
 			course.CourseId=params["id"]
@@ -108,4 +108,19 @@ func update(w http.ResponseWriter,r * http.Request){
 		}
 	}
 
+}
+
+func deleteonecourse(w http.ResponseWriter,r *http.Request){
+	fm.Println("delete one course")
+	w.Header().Set("content-type","application/json")
+    params:=mux.Vars(r)
+	//looping
+	for indedx,course := range courses{
+		if course.CouseId==params["id"]{
+		 courses=append(courses[:index],courses[index+1:]...)
+		 json.NewEncoder(w).Encode("This course has been deleted")
+		 break
+			
+		}
+	}
 }
