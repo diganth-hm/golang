@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"encodeibg/json"
 	"github.com/gorilla/mux"
+	"math/rand"
 
 )
 
@@ -12,7 +13,7 @@ type Course struct{
     CourseId string      `json:"couseid"`
 	CourseName string    `json:"coursename"`
 	CoursePrice float64  `json:"courseprice"`
-    Author *Author        `jaon:"author"`
+    Author *Author        `json:"author"`
 }
 type Author struct{
 	Fullname string  `json:"fullname"`
@@ -25,7 +26,7 @@ type Author struct{
  //middleware or helper
 
  func (c *Course) IsEmpty() bool{
-	return c.CouseID=="" && c,CourseName==""
+	return  c.CourseName==""
  }
 
 
@@ -59,4 +60,52 @@ func getOnecourse(w http.ResponseWriter,r *http.Request){
 	  }
 	  json.NewEncoder(w).Encode("No course found in the data base")
 	}
+}
+
+func createonecourse(w http.ResponseWriter,r *http.Request){
+    fmt.Println("Create one course ")
+	w.Header().Set("content-type","application/json")
+	if r.Body == nil {
+		json.NewEncoder(w).Encode("please enter some data")
+		return
+	}
+
+	var course Course
+	_ =json.NewDecoder(r.Body).Decode(&course)
+	if course.IsEmpty(){
+		json.NewEncoder(w).Encode("no data inside the json file")
+		return
+	}
+	//now gen a unique Id and appending it in to slices
+
+	rand.Seed(time.Now.UnixNano())
+	course.CourseId=Strconv.Itoa(rand.Intn(100))
+	courses=append(courses,course)
+	json.NewEncoder(w).Encode(course)
+	return
+
+}
+
+func update(w http.ResponseWriter,r * http.Request){
+	fmt.Println("updating a course")
+	w.Header().Set("content-type","application/json")
+    params:= mux.Vars(r)
+    // for loop 
+	for  index,course := range courses{
+		if course.CourseId==params["id"]{
+			courses=append(courses[:index],courses[index+1]...)
+			var course Course
+			_=josn.NewDecoder(r).Decode(&course)
+			course.CourseId=params["id"]
+			courses=append(courses,course)
+			json.NewEncoder(w).Encode(course)
+			return
+		}
+		//if the course id is not found
+		else{
+			josn.NewEncoder(w).Encode("No course found with the id you gave")
+		    return
+		}
+	}
+
 }
