@@ -52,12 +52,11 @@ func main(){
 							    Website:"Apnacollege.com"}})
 
 	//routing
-	r.HandleFunc("/",servHome).Methods("GET")
 	r.HandleFunc("/courses",getAllCourses).Methods("GET")
 	r.HandleFunc("/course/{id}",getOnecourse).Methods("GET")
-	r.HandleFunc("/course",createonecourse).Methods("POST")
-	r.HandleFunc("/course/{id}",update).Methods("PUT")
-	r.HandleFunc("/course/{id}",deleteonecourse).Methods("DELETE")
+	r.HandleFunc("/course/new",createonecourse).Methods("POST")
+	r.HandleFunc("/course/up/{id}",update).Methods("PUT")
+	r.HandleFunc("/course/del/{id}",deleteonecourse).Methods("DELETE")
 
 	//listening to a port
 	log.Fatal(http.ListenAndServe(":5193",r))
@@ -84,7 +83,7 @@ func getOnecourse(w http.ResponseWriter,r *http.Request){
 	params := mux.Vars(r)
 	//for loop of courses to find the matching couse id
 	for _,course := range courses{
-      if course.CourseId == params["ID"]{
+      if course.CourseId == params["id"]{
 		json.NewEncoder(w).Encode(course)
 		return
 	  }
