@@ -2,9 +2,13 @@ package main
 import (
 	"fmt"
 	"net/http"
-	"encodeibg/json"
+	"encoding/json"
 	"github.com/gorilla/mux"
 	"math/rand"
+	"time"
+	"strconv"
+	"log"
+
 
 )
 
@@ -30,17 +34,43 @@ type Author struct{
  }
 
 
-func mian(){
-   
+func main(){
+   fmt.Println("Server runnig on http://localhost:5193")
+   r:=mux.NewRouter()
 
+
+   //seeding
+   courses=append(courses,Course{CourseId:"3",
+                                CourseName:"Golang development",
+							    CoursePrice:354.55,
+							    Author:&Author{Fullname:"Harkirat",
+							    Website:"100xdev.com"}})
+   courses=append(courses,Course{CourseId:"1",
+                                CourseName:"web development",
+							    CoursePrice:890.55,
+							    Author:&Author{Fullname:"shraddha",
+							    Website:"Apnacollege.com"}})
+
+	//routing
+	r.HandleFunc("/",servHome).Methods("GET")
+	r.HandleFunc("/courses",getAllCourses).Methods("GET")
+	r.HandleFunc("/course/{id}",getOnecourse).Methods("GET")
+	r.HandleFunc("/course",createonecourse).Methods("POST")
+	r.HandleFunc("/course/{id}",update).Methods("PUT")
+	r.HandleFunc("/course/{id}",deleteonecourse).Methods("DELETE")
+
+	//listening to a port
+	log.Fatal(http.ListenAndServe(":5193",r))
 
 }
 
 
 
  //controller file
+
+ //serv home
 func servHome(w http.ResponseWriter,r *http.Request){
-	w.write([]byte("<h1>Welcomme to home page of a build API</h1>"))
+	w.Write([]byte("<h1>Welcomme to home page of a build API</h1>"))
  }
 func getAllCourses(w http.ResponseWriter,r *http.Request){
 	fmt.Println("Get all course deatails")
@@ -78,8 +108,8 @@ func createonecourse(w http.ResponseWriter,r *http.Request){
 	}
 	//now gen a unique Id and appending it in to slices
 
-	rand.Seed(time.Now.UnixNano())
-	course.CourseId=Strconv.Itoa(rand.Intn(100))
+	rand.Seed(time.Now().UnixNano())
+	course.CourseId=strconv.Itoa(rand.Intn(100))
 	courses=append(courses,course)
 	json.NewEncoder(w).Encode(course)
 	return
@@ -95,28 +125,26 @@ func update(w http.ResponseWriter,r * http.Request){
 		if course.CourseId==params["id"]{
 			courses=append(courses[:index],courses[index+1:]...)
 			var course Course
-			_=josn.NewDecoder(r).Decode(&course)
+			_=json.NewDecoder(r.Body).Decode(&course)
 			course.CourseId=params["id"]
 			courses=append(courses,course)
 			json.NewEncoder(w).Encode(course)
 			return
 		}
-		//if the course id is not found
-		else{
-			josn.NewEncoder(w).Encode("No course found with the id you gave")
-		    return
-		}
+		json.NewEncoder(w).Encode("No course found with the id you gave")
+		return
+		
 	}
 
 }
 
 func deleteonecourse(w http.ResponseWriter,r *http.Request){
-	fm.Println("delete one course")
+	fmt.Println("delete one course")
 	w.Header().Set("content-type","application/json")
     params:=mux.Vars(r)
 	//looping
-	for indedx,course := range courses{
-		if course.CouseId==params["id"]{
+	for index,course := range courses{
+		if course.CourseId==params["id"]{
 		 courses=append(courses[:index],courses[index+1:]...)
 		 json.NewEncoder(w).Encode("This course has been deleted")
 		 break
