@@ -7,9 +7,12 @@ import (
 	"go.mongodb.org/mongo-driver/v2/mongo/options"
 )
 
-const connectionString ="mongodb://localhost:270177"
+const connectionString ="mongodb://localhost:27017"
+const dbName = "netflix"
+const colName = "watchlist"
 
-var collectiiion *mongo.Collection
+
+var collection *mongo.Collection
 
 func init(){
 	//client option
