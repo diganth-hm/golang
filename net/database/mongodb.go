@@ -11,6 +11,13 @@ import (
 	"go.mongodb.org/mongo-driver/v2/mongo/options"
 )
 
+// error func
+func Error(err error) {
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
 const connectionString = "mongodb://localhost:27017"
 const dbName = "netflix"
 const colName = "watchlist"
@@ -36,18 +43,14 @@ func init() {
 
 func insertOnemovie(movie model.Netflix) {
 	insert, err := collection.InsertOne(context.Background(), movie)
-	if err != nil {
-		log.Fatal(err)
-	}
+	Error(err)
 	fmt.Println("Inserted One movie in db with id : ", insert.InsertedID)
 }
 
 func updateOnemovie(movieId string) {
 
 	id, err := bson.ObjectIDFromHex(movieId)
-	if err != nil {
-		log.Fatal(err)
-	}
+	Error(err)
 	filter := bson.M{"_id": id}
 	update := bson.M{"$set": bson.M{"watched": true}}
 
@@ -57,4 +60,14 @@ func updateOnemovie(movieId string) {
 	}
 	fmt.Println("modified count: ", result.ModifiedCount)
 
+}
+
+//delete one movie
+
+func deleteOnemovie(movieId string) {
+	id, err := bson.ObjectIDFromHex(movieId)
+	Error(err)
+	filter := bson.M{"_id": id}
+	collection.DeleteOne(context.Background(), filter)
+	fmt.Println("Successfully deleted the movie with the ID : ", id)
 }
