@@ -41,13 +41,13 @@ func init() {
 
 //mongodb helper file
 
-func insertOnemovie(movie model.Netflix) {
+func InsertOnemovie(movie model.Netflix) {
 	insert, err := collection.InsertOne(context.Background(), movie)
 	Error(err)
 	fmt.Println("Inserted One movie in db with id : ", insert.InsertedID)
 }
 
-func updateOnemovie(movieId string) {
+func UpdateOnemovie(movieId string) {
 
 	id, err := bson.ObjectIDFromHex(movieId)
 	Error(err)
@@ -64,7 +64,7 @@ func updateOnemovie(movieId string) {
 
 //delete one movie
 
-func deleteOnemovie(movieId string) {
+func DeleteOnemovie(movieId string) {
 	id, err := bson.ObjectIDFromHex(movieId)
 	Error(err)
 	filter := bson.M{"_id": id}
@@ -75,7 +75,7 @@ func deleteOnemovie(movieId string) {
 
 //delete the complete database data
 
-func deleteAllmovie() {
+func DeleteAllmovie() {
 	filter := bson.D{{}}
 	//u could declare a var of filter or directly pass bson.D
 	deletecount, err := collection.DeleteMany(context.Background(), filter, nil)
