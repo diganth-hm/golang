@@ -68,6 +68,35 @@ func deleteOnemovie(movieId string) {
 	id, err := bson.ObjectIDFromHex(movieId)
 	Error(err)
 	filter := bson.M{"_id": id}
-	collection.DeleteOne(context.Background(), filter)
-	fmt.Println("Successfully deleted the movie with the ID : ", id)
+	deletecount, err := collection.DeleteOne(context.Background(), filter)
+	Error(err)
+	fmt.Println("Successfully deleted the movie with the count : ", deletecount)
+}
+
+//delete the complete database data
+
+func deleteAllmovie() {
+	filter := bson.D{{}}
+	//u could declare a var of filter or directly pass bson.D
+	deletecount, err := collection.DeleteMany(context.Background(), filter, nil)
+	Error(err)
+	fmt.Println("Number of movies deleted is : ", deletecount)
+
+}
+
+//get all movies from db
+
+func Getallmovies() []model.Netflix {
+	cur, err := collection.Find(context.Background(), bson.D{{}})
+	Error(err)
+	defer cur.Close(context.Background())
+	var movies []model.Netflix
+	for cur.Next(context.Background()) {
+		var movie model.Netflix
+		err := cur.Decode(&movie)
+		Error(err)
+		movies = append(movies, movie)
+	}
+
+	return movies
 }
