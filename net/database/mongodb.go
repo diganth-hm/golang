@@ -54,7 +54,7 @@ func UpdateOnemovie(movieId string) {
 	filter := bson.M{"_id": id}
 	update := bson.M{"$set": bson.M{"watched": true}}
 
-	result, err := collection.updateOnemovie(context.Background(), filter, update)
+	result, err := collection.UpdateOne(context.Background(), filter, update)
 	if err != nil {
 		log.Fatal(err)
 	}
