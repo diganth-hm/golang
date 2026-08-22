@@ -47,10 +47,8 @@ func MarkAswatched(w http.ResponseWriter, r *http.Request) {
 func DeleteAmovie(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Allow-Control-Allow-Methods", "DELETE")
-	var movie string
-	err := json.NewDecoder(r.Body).Decode(&movie)
-	Err(err)
-	database.DeleteOnemovie(movie)
+	params := mux.Vars(r)
+	database.DeleteOnemovie(params["id"])
 }
 
 func DeleteAll(w http.ResponseWriter, r *http.Request) {
