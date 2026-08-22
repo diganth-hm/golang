@@ -8,6 +8,7 @@ import (
 
 	"github.com/diganth-hm/golang/buildapi/database"
 	model "github.com/diganth-hm/golang/buildapi/models"
+	"github.com/gorilla/mux"
 )
 
 func Err(err error) {
@@ -32,5 +33,29 @@ func Creatmovie(w http.ResponseWriter, r *http.Request) {
 	Err(err)
 	database.InsertOnemovie(movie)
 	json.NewEncoder(w).Encode(movie)
+
+}
+
+func MarkAswatched(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Allow-Control-Allow-Method", "PUT")
+	params := mux.Vars(r)
+	database.Watched(params["id"])
+	json.NewEncoder(w).Encode(params["id"])
+}
+
+func DeleteAmovie(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Allow-Control-Allow-Methods", "DELETE")
+	var movie string
+	err := json.NewDecoder(r.Body).Decode(&movie)
+	Err(err)
+	database.DeleteOnemovie(movie)
+}
+
+func DeleteAll(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Allow-Control-Allow-Methods", "DELETE")
+	database.DeleteAllmovie()
 
 }
