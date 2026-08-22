@@ -57,3 +57,10 @@ func DeleteAll(w http.ResponseWriter, r *http.Request) {
 	database.DeleteAllmovie()
 
 }
+
+func Home(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Allow-Control-Allow-Methods", "GET")
+	json.NewEncoder(w).Encode("Welcome to Netflix")
+	json.NewEncoder(w).Encode("\n\n This is the backend of Netfix model using golang and mongoDB.")
+}
