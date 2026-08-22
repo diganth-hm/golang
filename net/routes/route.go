@@ -7,6 +7,7 @@ import (
 
 func Router() *mux.Router {
 	router := mux.NewRouter()
+	router.HandleFunc("/", controller.Home).Methods("GET")
 	router.HandleFunc("/movies", controller.GetAllmovies).Methods("GET")
 	router.HandleFunc("/movies/add", controller.Creatmovie).Methods("POST")
 	router.HandleFunc("/movies/delone/{id}", controller.DeleteAmovie).Methods("DELETE")
