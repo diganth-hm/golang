@@ -47,7 +47,7 @@ func InsertOnemovie(movie model.Netflix) {
 	fmt.Println("Inserted One movie in db with id : ", insert.InsertedID)
 }
 
-func UpdateOnemovie(movieId string) {
+func Watched(movieId string) {
 
 	id, err := bson.ObjectIDFromHex(movieId)
 	Error(err)
