@@ -9,8 +9,8 @@ func Router() *mux.Router {
 	router := mux.NewRouter()
 	router.HandleFunc("/movies", controller.GetAllmovies).Methods("GET")
 	router.HandleFunc("/movies/add", controller.Creatmovie).Methods("POST")
-	router.HandleFunc("/movies/delone", controller.DeleteAmovie).Methods("DELETE")
+	router.HandleFunc("/movies/delone/{id}", controller.DeleteAmovie).Methods("DELETE")
 	router.HandleFunc("/movies/delAll", controller.DeleteAll).Methods("DELETE")
-	router.HandleFunc("/movie/marksaswatched/{}", controller.MarkAswatched).Methods("PUT")
+	router.HandleFunc("/movie/marksaswatched/{id}", controller.MarkAswatched).Methods("PUT")
 	return router
 }
