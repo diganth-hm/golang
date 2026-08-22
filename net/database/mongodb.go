@@ -28,7 +28,7 @@ func init() {
 	//client option
 	clientoption := options.Client().ApplyURI(connectionString)
 	//connect to mongodb
-	client, err := mongo.Connect(context.TODO(), clientoption)
+	client, err := mongo.Connect(clientoption)
 	if err != nil {
 		panic(err)
 	}
